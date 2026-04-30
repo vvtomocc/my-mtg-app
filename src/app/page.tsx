@@ -137,9 +137,7 @@ firstPage.drawText(formData.firstName, {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white p-4" onClick={handleScreenClick}>
-      <div className="fixed top-4 right-4 bg-orange-600 p-2 rounded text-xs z-50">
-        座標目安 X:{coords.x} Y:{coords.y}
-      </div>
+     
 
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 pt-10">
         <div className="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
