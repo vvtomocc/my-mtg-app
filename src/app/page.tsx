@@ -67,7 +67,7 @@ firstPage.drawText(formData.firstName, {
 });
 
       // --- 2. 基本情報（右上の表付近 ） ---
-      firstPage.drawText(formData.deckName, { x: 500, y: 630, size: 10, font: jpFont });
+      firstPage.drawText(formData.deckName, { x: 450, y: 650, size: 10, font: jpFont });
 
       // --- 3. メインデッキの印字 (31行目から2列目に移動) ---
       const mainLines = formData.mainBoard.split('\n');
