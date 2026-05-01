@@ -69,28 +69,34 @@ firstPage.drawText(formData.firstName, {
       // --- 2. 基本情報（右上の表付近 ） ---
       firstPage.drawText(formData.deckName, { x: 380, y: 725, size: 10, font: jpFont });
 
-      // --- 3. メインデッキの印字 (枚数と名前を分けて配置) ---
-      const mainLines = formData.mainBoard.split('\n');
-      mainLines.forEach((line, index) => {
-        const yPos = 605 - (index * 17.9); // 行間。PDFの枠に合わせて16.2を微調整
-        
-        // 正規表現で「最初の数字」と「それ以降の文字」に分ける
-        const match = line.match(/^(\d+)\s+(.*)/);
-        
-        if (match) {
-          const count = match[1]; // 枚数 (例: "4")
-          const name = match[2];  // カード名 (例: "意志の力/Force of Will")
-          
-          // 枚数を印字 (右詰めっぽくしたい場合は x を調整) [cite: 1]
-          firstPage.drawText(count, { x: 90, y: yPos, size: 12, font: jpFont });
-          
-          // カード名を印字 (枚数から少し離した位置から開始) [cite: 1]
-          firstPage.drawText(name, { x: 135, y: yPos, size: 12, font: jpFont });
-        } else if (line.trim()) {
-          // 数字がない行（空行以外）はそのまま印字
-          firstPage.drawText(line, { x: 90, y: yPos, size: 12, font: jpFont });
-        }
-      });
+      // --- 3. メインデッキの印字 (31行目から2列目に移動) ---
+      const mainLines = formData.mainBoard.split('\n');
+      mainLines.forEach((line, index) => {
+        // 基本は1列目の座標
+        let xCount = 90;
+        let xName = 135;
+        let yPos = 605 - (index * 17.9); 
+
+        // 31行目以降（index 30以上）は2列目の座標へ切り替え
+        if (index >= 30) {
+          const col2Index = index - 30; // 2列目の中での行番号
+          xCount = 362; // 指定の2列目枚数X
+          xName = 405; // 指定の2列目カード名X
+          yPos = 605 - (col2Index * 17.9); // 2列目も上から並べる
+        }
+        
+        const match = line.match(/^(\d+)\s+(.*)/);
+        
+        if (match) {
+          const count = match[1];
+          const name = match[2];
+          
+          firstPage.drawText(count, { x: xCount, y: yPos, size: 12, font: jpFont });
+          firstPage.drawText(name, { x: xName, y: yPos, size: 12, font: jpFont });
+        } else if (line.trim()) {
+          firstPage.drawText(line, { x: xName, y: yPos, size: 12, font: jpFont });
+        }
+      });
       // メイン合計枚数印字 
       firstPage.drawText(mainCount.toString(), { x: 275, y: 41, size: 18, font: jpFont });
 
